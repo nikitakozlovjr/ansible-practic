@@ -1,0 +1,16 @@
+- hosts: webserver
+  remote_user: ubuntu
+  vars:
+    users:
+      - { name: jaime, email: jaime@test.com }
+      - { name: sansa, email: sansa@test.com }
+      - { name: robert, email: robert@test.com }
+
+  tasks:
+    - name: create .gitconfig
+      ansible.builtin.template:
+        src: ../files/gitconfig
+        dest: "/home/{{ item.name }}/.gitconfig"
+      loop: "{{ users }}"
+      become: yes
+    

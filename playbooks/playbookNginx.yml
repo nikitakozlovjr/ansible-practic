@@ -1,0 +1,51 @@
+- hosts: webserver
+  remote_user: ubuntu
+  gather_facts: no
+  vars:
+    nginx_port: 80
+
+  tasks:
+    # - name: update package
+    #   ansible.builtin.apt:
+    #     upgrade: yes
+    #     update_cache: yes
+    #     cache_valid_time: 86400
+    #   become: yes
+
+    - name: install nginx
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+      notify:
+        - add www-data in group ubuntu
+      become: yes
+
+    - name: make config
+      ansible.builtin.template:
+        src: ../files/practic.conf
+        dest: /etc/nginx/sites-available/practic.conf
+      notify:
+        - restart nginx
+      become: yes
+
+    - name: make link
+      ansible.builtin.file:
+        src: /etc/nginx/sites-available/practic.conf
+        dest: /etc/nginx/sites-enabled/practic.conf
+        state: link
+      notify:
+        - restart nginx
+      become: yes
+
+    - name: add www-data in group ubuntu
+      ansible.builtin.user:
+        user: www-data
+        group: ubuntu
+      become: yes
+
+  handlers: 
+    - name: restart nginx
+      ansible.builtin.service:
+        name: nginx
+        state: reloaded
+      become: yes
