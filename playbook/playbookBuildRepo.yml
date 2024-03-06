@@ -1,0 +1,10 @@
+- hosts: ansible-practic
+  gather_facts: no
+
+  tasks: 
+    # изменение данных в /home/ansible-worker/www/stud-template/index.html
+    - name: change data in index.html
+      ansible.builtin.copy:
+        src: ../files/index.html
+        dest: /home/ansible-worker/www/stud-template/index.html
+      become: yes
