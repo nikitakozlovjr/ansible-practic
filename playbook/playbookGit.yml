@@ -1,0 +1,17 @@
+- hosts: ansible-practic
+  gather_facts: no
+
+  tasks: 
+    # установка git 
+    - name: install git
+      ansible.builtin.apt:
+        name: git
+        state: present 
+      become: yes
+
+    # клонирование репозитория stud-template
+    - name: cloning repository
+      ansible.builtin.git:
+        repo: "https://github.com/iphilka/stud-template.git"
+        dest: "/home/ansible-worker/www/stud-template"
+      become: yes
