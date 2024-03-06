@@ -1,0 +1,23 @@
+- hosts: ansible-practic
+  gather_facts: no
+
+  vars:
+    ssh_keys:
+      - { type_key: id_rsa, path: "../../ssh_keys/id_rsa" }
+      - { type_key: id_rsa.pub, path: "../../ssh_keys/id_rsa.pub" }
+
+    # создаем authorized_key для ansible-worker
+    - name: create authorized_key file
+      ansible.posix.authorized_key:
+        user: ubuntu
+        state: present
+        key: "{{ lookup('file', '../ssh_keys/id_rsa.pub') }}"
+      become: yes
+
+    # копируем ssh ключи (открытый и закрытый) для работы с гитом
+    - name: copy id_rsa и id_rsa.pub
+      ansible.builtin.copy:
+        src: "{{ item.path }}"
+        dest: "/home/ubuntu/.ssh/{{ item.type_key }}"
+      loop: "{{ ssh_keys }}"
+      become: yes
