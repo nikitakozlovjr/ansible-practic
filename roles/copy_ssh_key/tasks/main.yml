@@ -1,6 +1,5 @@
 - hosts: ansible-practic
   gather_facts: no
-
   vars:
     ssh_keys:
       - { type_key: id_rsa, path: "../../ssh_keys/id_rsa" }
