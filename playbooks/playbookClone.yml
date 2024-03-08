@@ -8,5 +8,6 @@
         repo: "https://github.com/iphilka/stud-template.git"
         dest: "/home/ansible-worker/www/stud-template"
         clone: yes
+        update: no
       become: yes
       tags: git_clone
