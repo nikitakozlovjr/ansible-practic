@@ -11,8 +11,8 @@
       become: yes
       tags: nginx
 
-    # добавление пользователя www-data в группу root
-    - name: add www-data to group root
+    # добавление разрешений для группы www-data
+    - name: Set permissions for www-data group
       ansible.builtin.file:
         path: /home/ansible-worker/www
         owner: www-data
@@ -22,7 +22,7 @@
       become: yes
       tags: nginx
     
-    # добавление конфигурационного файла в 
+    # добавление конфигурационного файла 
     - name: add file configuration file
       ansible.builtin.copy:
         src: ../files/ansible_iphilka_ru.conf
